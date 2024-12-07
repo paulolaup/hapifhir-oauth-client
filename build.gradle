@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+}
+
+group = 'usr.paulolaup'
+version = '0.0.1-alpha'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    // HAPI FHIR
+    implementation 'ca.uhn.hapi.fhir:hapi-fhir-client:7.6.0'
+    testImplementation 'ca.uhn.hapi.fhir:hapi-fhir-structures-r4:7.6.0'
+}
+
+test {
+    useJUnitPlatform()
+}
