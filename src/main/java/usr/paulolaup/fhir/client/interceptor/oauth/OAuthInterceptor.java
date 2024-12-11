@@ -93,8 +93,11 @@ public abstract class OAuthInterceptor {
     public void interceptResponse(final IHttpRequest theRequest, final IHttpResponse theResponse,
                                   final IRestfulClient theClient, final ClientResponseContext theContext
     ) throws IOException, AuthenticationException {
-        if (theResponse.getStatus() == 401 /*Unauthorized*/) refreshAccessToken();
-        theContext.setHttpResponse(theRequest.execute());
+        if (theResponse.getStatus() == 401 /*Unauthorized*/) {
+            theResponse.close();
+            refreshAccessToken();
+            theContext.setHttpResponse(theRequest.execute());
+        }
     }
 
     public abstract List<NameValuePair> getGrantTypeSpecificParameters();

@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'usr.paulolaup'
-version = '0.0.1-alpha'
+version = '0.0.2-experimental'
 
 repositories {
     mavenCentral()
