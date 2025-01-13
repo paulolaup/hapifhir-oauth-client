@@ -1,0 +1,25 @@
+services:
+  keycloak:
+    image: "quay.io/keycloak/keycloak:26.0.7"
+    command: "start-dev --import-realm"
+    environment:
+      KEYCLOAK_ADMIN: "admin"
+      KEYCLOAK_ADMIN_PASSWORD: "admin"
+    ports:
+    - "8090:8080"
+    volumes:
+    - "./keycloak:/opt/keycloak/data/import"
+  blaze:
+    image: "samply/blaze:latest"
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xmx1g"
+      OPENID_PROVIDER_URL: "http://keycloak:8080/realms/test"
+      ENFORCE_REFERENTIAL_INTEGRITY: "false"
+    ports:
+    - "8080:8080"
+    volumes:
+    - "blaze-data:/app/data"
+    depends_on:
+    - keycloak
+volumes:
+  blaze-data:

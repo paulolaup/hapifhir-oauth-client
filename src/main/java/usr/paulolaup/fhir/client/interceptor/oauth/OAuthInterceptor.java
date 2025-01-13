@@ -95,7 +95,11 @@ public abstract class OAuthInterceptor {
     ) throws IOException, AuthenticationException {
         if (theResponse.getStatus() == 401 /*Unauthorized*/) {
             theResponse.close();
-            refreshAccessToken();
+            final var authHeader = theRequest.getAllHeaders().getOrDefault("Authorization", Collections.emptyList());
+            theRequest.removeHeaders("Authorization");
+            authHeader.stream().filter((e) -> e.matches("^Bearer"))
+                    .forEach((e) -> theRequest.addHeader("Authorization", e));
+            interceptRequest(theRequest);
             theContext.setHttpResponse(theRequest.execute());
         }
     }

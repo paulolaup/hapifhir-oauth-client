@@ -14,9 +14,15 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
+    // Docker
+    testImplementation 'com.github.docker-java:docker-java:3.4.1'
+
     // HAPI FHIR
     implementation 'ca.uhn.hapi.fhir:hapi-fhir-client:7.6.0'
     testImplementation 'ca.uhn.hapi.fhir:hapi-fhir-structures-r4:7.6.0'
+
+    // Jackson
+    testImplementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.2'
 }
 
 test {
