@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id 'com.adarshr.test-logger' version '4.0.0'
 }
 
 group = 'usr.paulolaup'
@@ -14,13 +15,39 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
+    // Docker
+    testImplementation 'com.github.docker-java:docker-java:3.4.1'
+
     // HAPI FHIR
     implementation 'ca.uhn.hapi.fhir:hapi-fhir-client:7.6.0'
     testImplementation 'ca.uhn.hapi.fhir:hapi-fhir-structures-r4:7.6.0'
+
+    // Jackson
+    testImplementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.2'
 }
 
 test {
     useJUnitPlatform()
+}
+
+testlogger {
+    theme 'standard'
+    showExceptions true
+    showStackTraces true
+    showFullStackTraces true
+    showCauses true
+    slowThreshold 2000
+    showSummary true
+    showSimpleNames false
+    showPassed true
+    showSkipped true
+    showFailed true
+    showOnlySlow false
+    showStandardStreams false
+    showPassedStandardStreams true
+    showSkippedStandardStreams true
+    showFailedStandardStreams true
+    logLevel 'lifecycle'
 }
 
 publishing {

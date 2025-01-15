@@ -1,0 +1,15 @@
+fhirServer:
+  baseUrl: "http://localhost:8080/fhir/"
+
+authServer:
+  tokenAccessUrl: "http://localhost:8090/realms/test/protocol/openid-connect/token"
+  clients:
+    - id: "client-credentials"
+      secret: "mJb2sdhIYpRM8EMHMhDvZO03rNLmmljz"
+    - id: "password-credentials"
+      secret: "BLP0L3cZPBXBNRtAxUk9JHSktWefZMK9"
+      authorization:
+        username: "test"
+        password: "test"
+    - id: "refresh-token"
+      secret: "wSsTkwak4Z9S67RdJ1L0GzPgSHF7PBno"

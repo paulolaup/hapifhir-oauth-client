@@ -1,0 +1,7 @@
+name: Run Tests after Push
+
+on: [push]
+
+jobs:
+  call-run-tests-workflow:
+    uses: ./.github/workflows/run-tests.yml

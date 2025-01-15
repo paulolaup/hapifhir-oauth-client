@@ -1,0 +1,34 @@
+services:
+  keycloak:
+    image: "quay.io/keycloak/keycloak:26.0.7"
+    command: "start-dev --import-realm"
+    environment:
+      KEYCLOAK_ADMIN: "admin"
+      KEYCLOAK_ADMIN_PASSWORD: "admin"
+    ports:
+    - "8090:8080"
+    volumes:
+    - "./keycloak:/opt/keycloak/data/import"
+  blaze:
+    # image: "samply/blaze:latest"
+    build:
+      dockerfile: blaze/Dockerfile
+    #command:
+    #  - apt-get install jq
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xmx1g"
+      OPENID_PROVIDER_URL: "http://keycloak:8080/realms/test"
+      ENFORCE_REFERENTIAL_INTEGRITY: "false"
+    ports:
+    - "8080:8080"
+    volumes:
+    - "blaze-data:/app/data"
+    depends_on:
+      - keycloak
+    healthcheck:
+      test: curl --fail -s --oauth2-bearer "$(curl -s -d 'grant_type=client_credentials' -u client-credentials:mJb2sdhIYpRM8EMHMhDvZO03rNLmmljz http://keycloak:8080/realms/test/protocol/openid-connect/token | jq -r .access_token)" http://localhost:8080/fhir || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 10
+volumes:
+  blaze-data:

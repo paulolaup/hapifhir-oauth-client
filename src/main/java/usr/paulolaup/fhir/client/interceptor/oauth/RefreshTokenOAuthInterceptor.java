@@ -20,8 +20,10 @@ public class RefreshTokenOAuthInterceptor extends OAuthInterceptor {
 
     @Override
     public List<NameValuePair> getGrantTypeSpecificParameters() {
-        return List.of(new BasicNameValuePair("refresh_token", myRefreshToken),
-                new BasicNameValuePair("grant_type", "refresh_token"));
+        return myRefreshToken != null ?
+                List.of(new BasicNameValuePair("refresh_token", myRefreshToken),
+                        new BasicNameValuePair("grant_type", "refresh_token"))
+                : List.of(new BasicNameValuePair("grant_type", "client_credentials"));
     }
 
     @Override
