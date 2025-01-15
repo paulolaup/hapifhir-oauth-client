@@ -33,7 +33,7 @@ class PasswordOAuthInterceptorTest extends OAuthTest
     }
 
     @Test
-    void testConstructor()
+    void constructorTest()
     {
         assertThrows(NullPointerException.class, () -> {
             new PasswordOAuthInterceptor(null, myClientCredentials, myUsernameAndPassword);
@@ -47,7 +47,7 @@ class PasswordOAuthInterceptorTest extends OAuthTest
     }
 
     @Test
-    void getGrantTypeSpecificParameters()
+    void getGrantTypeSpecificParametersTest()
     {
         final var interceptor = new PasswordOAuthInterceptor(
                 getTokenAccessUrl().toString(), myClientCredentials, myUsernameAndPassword
@@ -82,7 +82,7 @@ class PasswordOAuthInterceptorTest extends OAuthTest
     }
 
     @Test
-    void interceptResponse()
+    void interceptResponseTest()
     {
         final var interceptor = new PasswordOAuthInterceptor(
                 getTokenAccessUrl().toString(), myClientCredentials, myUsernameAndPassword

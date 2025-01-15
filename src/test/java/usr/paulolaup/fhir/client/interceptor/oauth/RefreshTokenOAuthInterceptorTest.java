@@ -13,17 +13,20 @@ import org.apache.http.util.EntityUtils;
 import org.hl7.fhir.r4.model.CapabilityStatement;
 import org.junit.jupiter.api.Test;
 
+import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ClientCredentialsOAuthInterceptorTest extends OAuthTest
+public class RefreshTokenOAuthInterceptorTest extends OAuthTest
 {
     private final UsernamePasswordCredentials myClientCredentials;
 
-    public ClientCredentialsOAuthInterceptorTest() throws Exception {
-        super("client-credentials");
+    public RefreshTokenOAuthInterceptorTest() throws Exception {
+        super("refresh-token");
         myClientCredentials = new UsernamePasswordCredentials(getClientId(), getClientSecret());
     }
 
@@ -31,20 +34,30 @@ public class ClientCredentialsOAuthInterceptorTest extends OAuthTest
     void constructorTest()
     {
         assertThrows(NullPointerException.class, () -> {
-            new ClientCredentialsOAuthInterceptor(null, myClientCredentials);
+            new RefreshTokenOAuthInterceptor(null, myClientCredentials);
         });
         assertThrows(NullPointerException.class, () -> {
-            new ClientCredentialsOAuthInterceptor(getTokenAccessUrl().toString(), null);
+            new RefreshTokenOAuthInterceptor(getTokenAccessUrl().toString(), null);
         });
     }
 
     @Test
     void getGrantTypeSpecificParametersTest()
     {
-        final var interceptor = new ClientCredentialsOAuthInterceptor(
+        final var interceptor = new RefreshTokenOAuthInterceptor(
                 getTokenAccessUrl().toString(), myClientCredentials
         );
-        final var expected = List.of(new BasicNameValuePair("grant_type", "client_credentials"));
+        var expected = List.of(new BasicNameValuePair("grant_type", "client_credentials"));
+
+        assertEquals(expected, interceptor.getGrantTypeSpecificParameters());
+
+        final var mockRefreshTokenBytes = new byte[24];
+        new SecureRandom().nextBytes(mockRefreshTokenBytes);
+        final var mockRefreshToken = Arrays.toString(mockRefreshTokenBytes);
+        final var responseFields = Map.of("refresh_token", (Object) mockRefreshToken);
+        expected = List.of(new BasicNameValuePair("refresh_token", mockRefreshToken),
+                new BasicNameValuePair("grant_type", "refresh_token"));
+        interceptor.updateGrantTypeSpecificParameters(responseFields);
 
         assertEquals(expected, interceptor.getGrantTypeSpecificParameters());
     }
@@ -52,7 +65,7 @@ public class ClientCredentialsOAuthInterceptorTest extends OAuthTest
     @Test
     void interceptRequestTest()
     {
-        final var interceptor = new ClientCredentialsOAuthInterceptor(
+        final var interceptor = new RefreshTokenOAuthInterceptor(
                 getTokenAccessUrl().toString(), myClientCredentials
         );
         final var clientFactory = new ApacheRestfulClientFactory(FHIR_CONTEXT);
@@ -74,7 +87,7 @@ public class ClientCredentialsOAuthInterceptorTest extends OAuthTest
     @Test
     void interceptResponseTest()
     {
-        final var interceptor = new ClientCredentialsOAuthInterceptor(
+        final var interceptor = new RefreshTokenOAuthInterceptor(
                 getTokenAccessUrl().toString(), myClientCredentials
         );
         final var clientFactory = new ApacheRestfulClientFactory(FHIR_CONTEXT);
@@ -112,7 +125,7 @@ public class ClientCredentialsOAuthInterceptorTest extends OAuthTest
     @Test
     public void integrationTest()
     {
-        final var interceptor = new ClientCredentialsOAuthInterceptor(
+        final var interceptor = new RefreshTokenOAuthInterceptor(
                 getTokenAccessUrl().toString(), myClientCredentials
         );
         final var client = FHIR_CONTEXT.newRestfulGenericClient(getFhirServerUrl().toString());
