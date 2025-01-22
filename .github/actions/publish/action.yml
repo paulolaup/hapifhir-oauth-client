@@ -1,0 +1,21 @@
+name: gradle-publish
+
+description: 'Publishes the built artifacts to GitHub Packages'
+
+inputs:
+  gradle_args:
+    required: true
+    description: 'String of Gradle args to modify the build process. By default the task is excluded'
+    default: "-x test"
+
+runs:
+  using: composite
+  steps:
+    # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
+    # the publishing section of your build.gradle
+    - name: Publish to GitHub Packages
+      shell: bash
+      run: ./gradlew ${{ inputs.gradle_args }}
+      env:
+        USERNAME: ${{ github.actor }}
+        TOKEN: ${{ github.token }}

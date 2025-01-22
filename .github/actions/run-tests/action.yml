@@ -1,0 +1,30 @@
+name: gradle-test
+
+description: 'Builds project with the Gradle wrapper executable inside the repository'
+
+inputs:
+  gradle_args:
+    required: false
+    description: 'String of Gradle args to modify the build process'
+
+runs:
+  using: composite
+  steps:
+    - name: Setup test environment via Docker Compose
+      shell: bash
+      run: |
+        cd .github/docker
+        docker compose up -d --wait
+        cd ../..
+
+    - name: Run tests with Gradle
+      shell: bash
+      run: ./gradlew test ${{ inputs.gradle_args }}
+
+    - name: Stop Docker containers
+      if: always()
+      shell: bash
+      run: |
+        cd .github/docker
+        docker compose down
+        cd ../..
