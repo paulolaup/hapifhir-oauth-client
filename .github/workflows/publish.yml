@@ -27,4 +27,4 @@ jobs:
 
     - name: Publish to GitHub Packages
       continue-on-error: false
-      run: ./.github/actions/publish
+      uses: ./.github/actions/publish
