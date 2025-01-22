@@ -57,9 +57,9 @@ testlogger {
     logLevel 'lifecycle'
 }
 
-signing {
+/*signing {
     sign publishing.publications.mavenJava
-}
+}*/
 
 publishing {
     repositories {
