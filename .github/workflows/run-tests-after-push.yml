@@ -7,13 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
 
       - name: Setup prerequisites
-        uses: ./.github/actions/setup/action.yml
+        uses: ./.github/actions/setup
 
       - name: Build project
-        uses: ./.github/actions/build-project/action.yml
+        uses: ./.github/actions/build-project
 
       - name: Run tests
-        uses: ./.github/actions/run-tests/action.yml
+        uses: ./.github/actions/run-tests
