@@ -1,11 +1,11 @@
-name: Test and Publish
+name: Publish Release
 
 on:
   release:
     types: [created, prereleased]
 
 jobs:
-  build-test-publish:
+  build-test-publish-for-release:
     runs-on: ubuntu-latest
     permissions:
       contents: read

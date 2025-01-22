@@ -15,7 +15,7 @@ runs:
     # the publishing section of your build.gradle
     - name: Publish to GitHub Packages
       shell: bash
-      run: ./gradlew ${{ inputs.gradle_args }}
+      run: ./gradlew publish ${{ inputs.gradle_args }}
       env:
         USERNAME: ${{ github.actor }}
         TOKEN: ${{ github.token }}
