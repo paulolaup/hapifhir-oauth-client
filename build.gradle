@@ -1,7 +1,9 @@
 plugins {
     id 'java'
+    id 'java-library'
     id 'maven-publish'
     id 'com.adarshr.test-logger' version '4.0.0'
+    id 'signing'
 }
 
 group = 'usr.paulolaup'
@@ -53,6 +55,10 @@ testlogger {
     showSkippedStandardStreams true
     showFailedStandardStreams true
     logLevel 'lifecycle'
+}
+
+signing {
+    sign publishing.publications.mavenJava
 }
 
 publishing {
