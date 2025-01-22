@@ -15,16 +15,16 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Setup prerequisites
-      uses: ./.github/actions/setup/action.yml
+      uses: ./.github/actions/setup
 
     - name: Build project
       continue-on-error: false
-      uses: ./.github/actions/build-project/action.yml
+      uses: ./.github/actions/build-project
 
     - name: Run tests
       continue-on-error: false
-      uses: ./.github/actions/run-tests/action.yml
+      uses: ./.github/actions/run-tests
 
     - name: Publish to GitHub Packages
       continue-on-error: false
-      run: ./.github/actions/publish/action.yml
+      run: ./.github/actions/publish
