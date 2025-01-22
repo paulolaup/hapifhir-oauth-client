@@ -9,6 +9,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: TEST
+        run: echo "$GITHUB_WORKSPACE"
+
       - name: Setup prerequisites
         uses: ./.github/actions/setup/action.yml
 
