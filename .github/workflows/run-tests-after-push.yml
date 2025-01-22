@@ -7,10 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: TEST
-        run: echo "$GITHUB_WORKSPACE"
+        uses: actions/checkout@v1
 
       - name: Setup prerequisites
         uses: ./.github/actions/setup/action.yml
